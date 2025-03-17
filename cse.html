@@ -1,0 +1,206 @@
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script>
+        function toggleDateOfLeaving(id) {
+            const yesCheckbox = document.getElementById(`working-yes-${id}`);
+            const noCheckbox = document.getElementById(`working-no-${id}`);
+            const dateOfLeaving = document.getElementById(`date-of-leaving-${id}`);
+            if (yesCheckbox.checked) {
+                dateOfLeaving.classList.add('hidden');
+            } else if (noCheckbox.checked) {
+                dateOfLeaving.classList.remove('hidden');
+            }
+        }
+
+        function toggleAddForm() {
+            const addForm = document.getElementById('add-form');
+            addForm.classList.toggle('hidden');
+        }
+
+        function toggleViewForm() {
+            const viewForm = document.getElementById('view-form');
+            viewForm.classList.toggle('hidden');
+        }
+
+        function addFaculty() {
+            const facultyCode = document.getElementById('faculty-code').value;
+            const facultyName = document.getElementById('faculty-name').value;
+            const dateJoin = document.getElementById('date-join').value;
+            const designation = document.getElementById('designation').value;
+            const workingYes = document.getElementById('working-yes-add').checked;
+            const dateLeaving = document.getElementById('date-leaving-add').value;
+
+            const facultyList = document.getElementById('faculty-list');
+
+            const newFaculty = document.createElement('div');
+            newFaculty.className = 'bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center';
+            newFaculty.innerHTML = `
+                <div class="text-lg font-bold">Faculty Code: ${facultyCode}</div>
+                <div>Faculty Name: ${facultyName}</div>
+                <div>Designation: ${designation}</div>
+                <div>Date of Join: ${dateJoin}</div>
+                <div class="mt-4 flex items-center space-x-2">
+                    <label class="font-bold">Currently Working:</label>
+                    <input type="radio" id="working-yes-${facultyCode}" name="working-${facultyCode}" class="form-radio" ${workingYes ? 'checked' : ''} onclick="toggleDateOfLeaving('${facultyCode}')">
+                    <label for="working-yes-${facultyCode}">Yes</label>
+                    <input type="radio" id="working-no-${facultyCode}" name="working-${facultyCode}" class="form-radio" ${!workingYes ? 'checked' : ''} onclick="toggleDateOfLeaving('${facultyCode}')">
+                    <label for="working-no-${facultyCode}">No</label>
+                </div>
+                <div id="date-of-leaving-${facultyCode}" class="${workingYes ? 'hidden' : ''} mt-2">
+                    <label for="date-leaving-${facultyCode}">Date of Leaving:</label>
+                    <input type="date" id="date-leaving-${facultyCode}" class="border rounded px-2 py-1" value="${dateLeaving}">
+                </div>
+                <div class="mt-4 flex space-x-4">
+                    <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="upgradeFaculty('${facultyCode}', '${facultyName}', '${designation}', '${dateJoin}', '${workingYes}', '${dateLeaving}')">Upgrade</button>
+                    <button class="bg-red-500 text-white px-4 py-2 rounded" onclick="viewFaculty('${facultyCode}', '${facultyName}', '${designation}', '${dateJoin}', '${workingYes}', '${dateLeaving}')">View</button>
+                </div>
+            `;
+
+            facultyList.appendChild(newFaculty);
+            toggleAddForm();
+        }
+
+        function upgradeFaculty(facultyCode, facultyName, designation, dateJoin, workingYes, dateLeaving) {
+            document.getElementById('faculty-code').value = facultyCode;
+            document.getElementById('faculty-name').value = facultyName;
+            document.getElementById('designation').value = designation;
+            document.getElementById('date-join').value = dateJoin;
+            document.getElementById('working-yes-add').checked = workingYes === 'true';
+            document.getElementById('working-no-add').checked = workingYes !== 'true';
+            document.getElementById('date-leaving-add').value = dateLeaving;
+            toggleAddForm();
+        }
+
+        function viewFaculty(facultyCode, facultyName, designation, dateJoin, workingYes, dateLeaving) {
+            document.getElementById('view-faculty-code').innerText = facultyCode;
+            document.getElementById('view-faculty-name').innerText = facultyName;
+            document.getElementById('view-designation').innerText = designation;
+            document.getElementById('view-date-join').innerText = dateJoin;
+            document.getElementById('view-currently-working').innerText = workingYes ? 'Yes' : 'No';
+            document.getElementById('view-date-leaving').innerText = dateLeaving;
+            toggleViewForm();
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-r from-blue-500 to-purple-500 min-h-screen flex flex-col items-center">
+    <div class="text-white text-3xl font-bold mt-8">CSE Faculty List</div>
+    <div id="faculty-list" class="w-full max-w-6xl mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 px-4">
+        <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+            <div class="text-lg font-bold">Faculty Code: F001</div>
+            <div>Faculty Name: John Doe</div>
+            <div>Designation: Professor</div>
+            <div>Date of Join: 15/3/2018</div>
+            <div class="mt-4 flex items-center space-x-2">
+                <label class="font-bold">Currently Working:</label>
+                <input type="radio" id="working-yes-1" name="working-1" class="form-radio" checked onclick="toggleDateOfLeaving(1)">
+                <label for="working-yes-1">Yes</label>
+                <input type="radio" id="working-no-1" name="working-1" class="form-radio" onclick="toggleDateOfLeaving(1)">
+                <label for="working-no-1">No</label>
+            </div>
+            <div id="date-of-leaving-1" class="hidden mt-2">
+                <label for="date-leaving-1">Date of Leaving:</label>
+                <input type="date" id="date-leaving-1" class="border rounded px-2 py-1">
+            </div>
+            <div class="mt-4 flex space-x-4">
+                <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="upgradeFaculty('F001', 'John Doe', 'Professor', '15/3/2018', true, '')">Upgrade</button>
+                <button class="bg-red-500 text-white px-4 py-2 rounded" onclick="viewFaculty('F001', 'John Doe', 'Professor', '15/3/2018', true, '')">View</button>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+            <div class="text-lg font-bold">Faculty Code: F002</div>
+            <div>Faculty Name: Jane Smith</div>
+            <div>Designation: Assistant Professor</div>
+            <div>Date of Join: 22/7/2020</div>
+            <div class="mt-4 flex items-center space-x-2">
+                <label class="font-bold">Currently Working:</label>
+                <input type="radio" id="working-yes-2" name="working-2" class="form-radio" checked onclick="toggleDateOfLeaving(2)">
+                <label for="working-yes-2">Yes</label>
+                <input type="radio" id="working-no-2" name="working-2" class="form-radio" onclick="toggleDateOfLeaving(2)">
+                <label for="working-no-2">No</label>
+            </div>
+            <div id="date-of-leaving-2" class="hidden mt-2">
+                <label for="date-leaving-2">Date of Leaving:</label>
+                <input type="date" id="date-leaving-2" class="border rounded px-2 py-1">
+            </div>
+            <div class="mt-4 flex space-x-4">
+                <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="upgradeFaculty('F002', 'Jane Smith', 'Assistant Professor', '22/7/2020', true, '')">Upgrade</button>
+                <button class="bg-red-500 text-white px-4 py-2 rounded" onclick="viewFaculty('F002', 'Jane Smith', 'Assistant Professor', '22/7/2020', true, '')">View</button>
+            </div>
+        </div>
+    </div>
+    <button class="fixed bottom-8 right-8 bg-blue-500 text-white p-4 rounded-full shadow-lg" onclick="toggleAddForm()">
+        <i class="fas fa-plus"></i>
+    </button>
+    <div id="add-form" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <div class="text-lg font-bold mb-4">Add Faculty</div>
+            <div class="mb-4">
+                <label for="faculty-code" class="block font-bold mb-1">Faculty Code:</label>
+                <input type="text" id="faculty-code" class="border rounded px-2 py-1 w-full">
+            </div>
+            <div class="mb-4">
+                <label for="faculty-name" class="block font-bold mb-1">Faculty Name:</label>
+                <input type="text" id="faculty-name" class="border rounded px-2 py-1 w-full">
+            </div>
+            <div class="mb-4">
+                <label for="designation" class="block font-bold mb-1">Designation:</label>
+                <input type="text" id="designation" class="border rounded px-2 py-1 w-full">
+            </div>
+            <div class="mb-4">
+                <label for="date-join" class="block font-bold mb-1">Date of Join:</label>
+                <input type="date" id="date-join" class="border rounded px-2 py-1 w-full">
+            </div>
+            <div class="mb-4 flex items-center space-x-2">
+                <label class="font-bold">Currently Working:</label>
+                <input type="radio" id="working-yes-add" name="working-add" class="form-radio" checked onclick="toggleDateOfLeaving('add')">
+                <label for="working-yes-add">Yes</label>
+                <input type="radio" id="working-no-add" name="working-add" class="form-radio" onclick="toggleDateOfLeaving('add')">
+                <label for="working-no-add">No</label>
+            </div>
+            <div id="date-of-leaving-add" class="hidden mb-4">
+                <label for="date-leaving-add">Date of Leaving:</label>
+                <input type="date" id="date-leaving-add" class="border rounded px-2 py-1 w-full">
+            </div>
+            <div class="flex justify-end space-x-4">
+                <button class="bg-gray-500 text-white px-4 py-2 rounded" onclick="toggleAddForm()">Cancel</button>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="addFaculty()">Add</button>
+            </div>
+        </div>
+    </div>
+    <div id="view-form" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <div class="text-lg font-bold mb-4">Faculty Details</div>
+            <div class="mb-4">
+                <div class="font-bold">Faculty Code:</div>
+                <div id="view-faculty-code"></div>
+            </div>
+            <div class="mb-4">
+                <div class="font-bold">Faculty Name:</div>
+                <div id="view-faculty-name"></div>
+            </div>
+            <div class="mb-4">
+                <div class="font-bold">Designation:</div>
+                <div id="view-designation"></div>
+            </div>
+            <div class="mb-4">
+                <div class="font-bold">Date of Join:</div>
+                <div id="view-date-join"></div>
+            </div>
+            <div class="mb-4">
+                <div class="font-bold">Currently Working:</div>
+                <div id="view-currently-working"></div>
+            </div>
+            <div class="mb-4">
+                <div class="font-bold">Date of Leaving:</div>
+                <div id="view-date-leaving"></div>
+            </div>
+            <div class="flex justify-end space-x-4">
+                <button class="bg-gray-500 text-white px-4 py-2 rounded" onclick="toggleViewForm()">Close</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

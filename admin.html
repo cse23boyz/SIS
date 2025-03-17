@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Login Page
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+ </head>
+ <body class="bg-gradient-to-r from-gray-900 to-gray-600 min-h-screen flex items-center justify-center">
+  <div class="bg-white shadow-lg rounded-lg flex max-w-4xl mx-auto">
+   <div class="w-1/2 hidden md:block">
+    <img alt="College logo" class="w-full h-full object-cover rounded-l-lg" height="600" src="Jacsice logo.jpg" width="600"/>
+   </div>
+   <div class="w-full md:w-1/2 p-8">
+    <h1 class="text-3xl font-bold text-blue-600 mb-6 text-center">
+     LOGIN
+    </h1>
+    <form id="loginForm" action="backend.php" method="POST">
+     <div class="mb-6">
+      <input id="username" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Username" type="text" required/>
+     </div>
+     <div class="mb-6">
+      <input id="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Password" type="password" required/>
+     </div>
+     <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300" type="submit">
+      ENTER
+     </button>
+    </form>
+   </div>
+  </div>
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        
+        var correctUsername = "admin";  // Set your username
+        var correctPassword = "2023-27"; // Set your password
+    
+        if (username.trim() === "" || password.trim() === "") {
+            event.preventDefault();
+            alert("Please enter both username and password.");
+        } else if (username !== correctUsername || password !== correctPassword) {
+            event.preventDefault();
+            alert("Incorrect username or password.");
+        } else {
+            window.open("dept.html" , "self"); // Change to your admin page
+        }
+      });
+    </script>
+</body>
+</html>
